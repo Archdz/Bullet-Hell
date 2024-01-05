@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Player.h"
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -13,6 +15,8 @@ public:
 private:
 	sf::RenderWindow window{ sf::VideoMode(800, 900), " " };
 	sf::Event event;
+	Player player;
+	sf::Time deltaTime;
 };
 
 
