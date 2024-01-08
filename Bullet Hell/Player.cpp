@@ -1,49 +1,54 @@
 #include "Player.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 
 Player::Player() {
-	playerScaleX = 0.1f;
-	playerScaleY = 0.1f;
+	playerScaleX = 0.3f;
+	playerScaleY = 0.3f;
 	pPosition.x = 400.0f;
     pPosition.y = 600.0f;
-	movementSpeed = 30.0f;
+	movementSpeed = 28.0f;
+	loadSprites();
 }
 
-void Player::loadSprite(const std::string& filename) {
+void Player::drawPlayer(sf::RenderWindow& window) {
+	window.draw(getPlayerSprite());
+}
 
-	if (!pTexture.loadFromFile("playersprite.png")) {
-		std::cout << "Failed to load 'playersprite.png'" << std::endl;
-	}
-	else {
-		std::cout << "Loaded 'playersprite.png'" << std::endl;
-	}
+void Player::loadSprites() {
 
-	pSprite.setTexture(pTexture);
+	if (!pTextureBoost.loadFromFile("player2boost.png")) { std::cout << "Texture Error" << std::endl; }
+	if (!pTextureBase.loadFromFile("player2.png")) { std::cout << "Texture Error" << std::endl; }
+	if (!pTextureSlow.loadFromFile("player2slow.png")) { std::cout << "Texture Error" << std::endl; }
+
+	pSprite.setTexture(pTextureBase);
+
 	pSprite.setScale(playerScaleX, playerScaleY);
 	pSprite.setPosition(pPosition.x - (pSprite.getGlobalBounds().width / 2), pPosition.y);
 }
 
-void Player::drawPlayer(sf::RenderWindow& window){
-	window.draw(pSprite);
-}
-
-void Player::setPosition(float x, float y)
+sf::Sprite Player::getPlayerSprite()
 {
-	pSprite.setPosition(x, y);
-	std::cout << pSprite.getGlobalBounds().width << std::endl;
-}
+	sf::Sprite tempSprite = pSprite;
 
-void Player::setScale(float x, float y)
-{
-	pSprite.setScale(x, y);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		tempSprite.setTexture(pTextureBoost);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		tempSprite.setTexture(pTextureSlow);
+	}
+
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		tempSprite.setTexture(pTextureBase);
+	}
+	return tempSprite;
 }
 
 void Player::movement(sf::Time deltaTime)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))	{
-			velocity.x -= movementSpeed/sqrt(2);
+			velocity.x -= movementSpeed / sqrt(2);
 		}
 		else {
 			velocity.x -= movementSpeed;
@@ -77,8 +82,25 @@ void Player::movement(sf::Time deltaTime)
 	pPosition.x += velocity.x * deltaTime.asSeconds();
 	pPosition.y += velocity.y * deltaTime.asSeconds();
 
-	velocity = 0.85f * velocity;
+	velocity = 0.90f * velocity;
 
 	pSprite.setPosition(pPosition.x, pPosition.y);
 }
+
+sf::Vector2f Player::getPosition()
+{
+	return pSprite.getPosition();
+}
+
+float Player::getSizeX()
+{
+	return pSprite.getGlobalBounds().width;
+}
+
+float Player::getSizeY()
+{
+	return pSprite.getGlobalBounds().height;
+}
+
+
 

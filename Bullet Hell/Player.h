@@ -1,26 +1,31 @@
 #pragma once
+#include "Entity.h"
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-class Player
+class Player : public Entity
 {
 public:
 	Player();
-	void loadSprite(const std::string& filename);
-	void drawPlayer(sf::RenderWindow& window);
-	void setPosition(float x, float y);
-	void setScale(float x, float y);
+	void loadSprites();
 	void movement(sf::Time deltaTime);
+	void drawPlayer(sf::RenderWindow& window);
+	sf::Vector2f getPosition();
+	float getSizeX();
+	float getSizeY();
+	sf::Sprite getPlayerSprite();
 
 private:
 	sf::Sprite pSprite;
-	sf::Texture pTexture;
-	float playerScaleX;
-	float playerScaleY;
+	sf::Texture pTextureBase;
+	sf::Texture pTextureBoost;
+	sf::Texture pTextureSlow;
+	sf::Vector2f velocity;
 	sf::Vector2f pPosition;
 	float movementSpeed;
-	sf::Vector2f velocity;
+	float playerScaleX;
+	float playerScaleY;
 };
 
