@@ -25,34 +25,55 @@ void windows::openwindow()
 			sf::sleep(frameTime - elapsedTime);
 		}
 
-		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-			if (gameState == GameState::MENU) {
-				int menuResult = mainMenu.handleInput();
+		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {				
+			
+			int menuResult = mainMenu.handleInput();
 
 				switch (menuResult)
 				{
 				case 0:
-					// Continue
+					std::cout << "Button Clicked: Continue" << std::endl;
 					break;
 				case 1:
-					// New Game
+					std::cout << "Button Clicked: New Game" << std::endl;
+					gameState = GameState::GAME;
 					break;
 				case 2:
-					// Help
+					std::cout << "Button Clicked: Help" << std::endl;
+					gameState = GameState::HELP;
 					break;
 				case 3:
-					// Scoreboard
+					std::cout << "Button Clicked: Scoreboard" << std::endl;
+					gameState = GameState::SCOREBOARD;
 					break;
-				default:
-					// No button clicked
+				case 4:
+					std::cout << "Button Clicked: Settings" << std::endl;
+					gameState = GameState::SETTINGS;
 					break;
-
-					if (mainMenu.isStartButtonClicked()) {
+				case 5:
+					std::cout << "Button Clicked: EXIT GAME" << std::endl;
+					window.close();
+					break;
+				case 6:
+					std::cout << "Button Clicked: Back to Menu" << std::endl;
+					gameState = GameState::MENU;
+					break;
+				case 7:
+					std::cout << "Button Clicked: F1" << std::endl;
+					if (gameState == GameState::HELP)
+					{
 						gameState = GameState::GAME;
 					}
-					// Handle other menu buttons...
+					else 
+					{
+						gameState = GameState::HELP;
+					}
+					break;
+				case 10:
+					std::cout << "Button Clicked: Esc" << std::endl;
+					gameState = GameState::MENU;
+					break;
 				}
-			}
 		}
 		updatewin();
 	}
@@ -68,6 +89,64 @@ void windows::updatewin()
 
 	projectile.shoot(player.getPosition().x + (player.getSizeX()/2) - 7, player.getPosition().y - (player.getSizeY() / 2) + 3);
 
+	updateProjectile();
+
+	window.display();
+}
+
+void windows::drawwin()
+{
+	background.drawBackground(window);
+
+	if (gameState == GameState::GAME)
+	{
+		player.drawPlayer(window);
+
+		drawProjectile();
+
+	}
+
+	if (gameState == GameState::MENU)
+	{
+		player.drawPlayer(window);
+
+		drawProjectile();
+
+		mainMenu.drawMenu(window);
+	}
+
+	if (gameState == GameState::HELP)
+	{
+		mainMenu.drawHelp(window);
+	}
+
+	if (gameState == GameState::SCOREBOARD)
+	{
+		mainMenu.drawScoreboard(window);
+	}
+
+	if (gameState == GameState::SETTINGS)
+	{
+		mainMenu.drawSettings(window);
+	}
+}
+
+void windows::drawProjectile()
+{
+
+	for (auto& proj : projectile.getProjectiles())
+	{
+		if (proj.isTextureLoaded() == false)
+		{
+			proj.loadTexture();
+
+		}
+		proj.drawProjectile(window);
+	}
+}
+
+void windows::updateProjectile()
+{
 	auto& projectiles = projectile.getProjectiles();
 	auto iter = projectiles.begin();
 
@@ -85,23 +164,5 @@ void windows::updatewin()
 			iter = projectiles.erase(iter);
 		}
 
-	}
-
-	window.display();
-}
-
-void windows::drawwin()
-{
-	player.drawPlayer(window);
-	mainMenu.draw(window);
-
-	for (auto& proj : projectile.getProjectiles())
-	{
-		if (proj.isTextureLoaded() == false)
-		{
-			proj.loadTexture();
-
-		}
-		proj.drawProjectile(window);
 	}
 }

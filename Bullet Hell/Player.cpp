@@ -79,12 +79,28 @@ void Player::movement(sf::Time deltaTime)
 		}
 	}
 
-	pPosition.x += velocity.x * deltaTime.asSeconds();
-	pPosition.y += velocity.y * deltaTime.asSeconds();
-
 	velocity = 0.90f * velocity;
 
-	pSprite.setPosition(pPosition.x, pPosition.y);
+	pPosition.x = pSprite.getPosition().x;
+	pPosition.y = pSprite.getPosition().y;
+
+	if (pPosition.x < 202 && velocity.x < 0) {
+		velocity.x = 0;
+	}
+
+	if (pPosition.x > (998 - pSprite.getGlobalBounds().width) && velocity.x > 0) {
+		velocity.x = 0;
+	}
+
+	if (pPosition.y < 0 && velocity.y < 0) {
+		velocity.y = 0;
+	}
+
+	if (pPosition.y > (800 - pSprite.getGlobalBounds().height) && velocity.y > 0) {
+		velocity.y = 0;
+	}
+
+	pSprite.move(velocity.x * deltaTime.asSeconds(), velocity.y * deltaTime.asSeconds());
 }
 
 sf::Vector2f Player::getPosition()

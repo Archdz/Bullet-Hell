@@ -9,16 +9,22 @@ class Menu
 public:
     Menu(sf::RenderWindow& window);
 
-    void draw(sf::RenderWindow& window);
+    void drawMenu(sf::RenderWindow& window);
+    void drawHelp(sf::RenderWindow& window);
+    void drawScoreboard(sf::RenderWindow& window);
+    void drawSettings(sf::RenderWindow& window);
+
     int handleInput();
-    bool isStartButtonClicked();
     void updateButtonColors();
 
 private:
     sf::RenderWindow& window;
     sf::Font font;
-    sf::Text titleText;
+    std::vector<sf::Text> textHeaders;
     std::vector<sf::Text> buttons;
     bool startButtonHovered;
+    bool isMenu;
+    bool isBack;
+    const int backButton{ 6 };
 };
 
