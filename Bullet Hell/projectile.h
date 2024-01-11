@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "Fodder.h"
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -18,7 +19,12 @@ public:
 	std::vector<projectile>& getProjectiles();
 	bool isTextureLoaded();
 	void loadTexture();
-	bool isOutOfBounds();
+	void isOutOfBounds();
+	void clearSprites();
+	bool checkCollision(Fodder& fodder);
+	sf::FloatRect getProjectileBounds();
+	void assignRemove();
+	bool deleteEntity();
 
 private:
 	sf::Sprite projSprite;
@@ -31,5 +37,6 @@ private:
 	int cooldown;
 	std::vector<projectile> projectiles;
 	bool textureLoaded;
+	bool remove;
 };
 

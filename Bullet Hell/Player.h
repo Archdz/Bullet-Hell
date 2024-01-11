@@ -16,6 +16,7 @@ public:
 	float getSizeX();
 	float getSizeY();
 	sf::Sprite getPlayerSprite();
+	void resetPosition();
 
 private:
 	sf::Sprite pSprite;

@@ -1,20 +1,10 @@
 #include "Menu.h"
 
-Menu::Menu(sf::RenderWindow& window) : window(window) {
+Menu::Menu(sf::RenderWindow& windowTemp) : window(windowTemp) {
 
     if (!font.loadFromFile("arial.ttf")) { std::cout << "Font Error" << std::endl; }
 
-    std::vector<std::string> buttonLabels = { "Continue", "New Game", "Help", "Scoreboard", "Settings", "EXIT GAME", "Back to Menu"};
-
-    for (size_t i = 0; i < buttonLabels.size(); ++i) {
-        sf::Text button;
-        button.setFont(font);
-        button.setString(buttonLabels[i]);
-        button.setCharacterSize(20);
-        button.setPosition(250, 200 + i * 50);
-
-        buttons.push_back(button);
-    }
+    createButtons();
 
     std::vector<std::string> headerLabels = { "Main Menu", "Help Title", "Scoreboard Title", "Settings Title"};
 
@@ -28,51 +18,50 @@ Menu::Menu(sf::RenderWindow& window) : window(window) {
         textHeaders.push_back(header);
     }
 
-    buttons[backButton].setPosition(250, 200);
-
     startButtonHovered = false;
     isMenu = true;
     isBack = false;
 }
 
-void Menu::drawMenu(sf::RenderWindow& window) {
+void Menu::drawMenu(sf::RenderWindow& windowTemp) {
     isMenu = true;
     isBack = false;
 
     updateButtonColors();
-    window.draw(textHeaders[0]);
+    windowTemp.draw(textHeaders[0]);
     for (const auto& button : buttons) {
-        if (&button != &buttons[backButton]) {
-            window.draw(button);
+        if (&button != &buttons[backButton] && &button != &buttons[fodderButton]) {
+            windowTemp.draw(button);
         }
     }
 }
 
-void Menu::drawHelp(sf::RenderWindow& window) {
+void Menu::drawHelp(sf::RenderWindow& windowTemp) {
     isMenu = false;
     isBack = true;
 
     updateButtonColors();
-    window.draw(textHeaders[1]);
-    window.draw(buttons[backButton]);
+    windowTemp.draw(textHeaders[1]);
+    windowTemp.draw(buttons[backButton]);
 }
 
-void Menu::drawScoreboard(sf::RenderWindow& window) {
+void Menu::drawScoreboard(sf::RenderWindow& windowTemp) {
     isMenu = false;
     isBack = true;
 
     updateButtonColors();
-    window.draw(textHeaders[2]);
-    window.draw(buttons[backButton]);
+    windowTemp.draw(textHeaders[2]);
+    windowTemp.draw(buttons[backButton]);
 }
 
-void Menu::drawSettings(sf::RenderWindow& window) {
+void Menu::drawSettings(sf::RenderWindow& windowTemp) {
     isMenu = false;
     isBack = true;
 
     updateButtonColors();
-    window.draw(textHeaders[3]);
-    window.draw(buttons[backButton]);
+    windowTemp.draw(textHeaders[3]);
+    windowTemp.draw(buttons[backButton]);
+    windowTemp.draw(buttons[fodderButton]);
 }
 
 int Menu::handleInput() {
@@ -107,14 +96,15 @@ int Menu::handleInput() {
             }
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            return static_cast<int>(10);
-        }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
         {
-            return static_cast<int>(7);
+            return static_cast<int>(20);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            return static_cast<int>(21);
         }
     }
 
@@ -131,4 +121,29 @@ void Menu::updateButtonColors()
         startButtonHovered = startButtonBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
         buttons[i].setFillColor(startButtonHovered ? sf::Color::Cyan : sf::Color::White);
     }
+}
+
+void Menu::loadDifficulty(int a)
+{
+    fodderSetting = a;
+}
+
+void Menu::createButtons()
+{
+    buttons.clear();
+
+    std::vector<std::string> buttonLabels = { "Continue", "New Game", "Help", "Scoreboard", "Settings", "EXIT GAME", "Back to Menu", "Fodder Difficulty: " + std::to_string(fodderSetting) };
+
+    for (size_t i = 0; i < buttonLabels.size(); ++i) {
+        sf::Text button;
+        button.setFont(font);
+        button.setString(buttonLabels[i]);
+        button.setCharacterSize(20);
+        button.setPosition(250, 200 + i * 50);
+
+        buttons.push_back(button);
+    }
+
+    buttons[backButton].setPosition(250, 200);
+    buttons[fodderButton].setPosition(250, 250);
 }

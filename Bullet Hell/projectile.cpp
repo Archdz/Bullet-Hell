@@ -10,6 +10,7 @@ projectile::projectile()
 	movementSpeed = 6.f;
 	loadSprite("projectile2.png");
 	textureLoaded = false;
+	remove = false;
 }
 
 void projectile::loadSprite(const std::string& filename)
@@ -31,6 +32,7 @@ void projectile::drawProjectile(sf::RenderWindow& window)
 void projectile::update()
 {
 	projSprite.move(0.0f, -movementSpeed);
+	isOutOfBounds();
 }
 
 void projectile::shoot(float playerX, float playerY)
@@ -43,7 +45,6 @@ void projectile::shoot(float playerX, float playerY)
 			projectile newProjectile;
 			newProjectile.setPosition(playerX, playerY);
 			projectiles.push_back(newProjectile);
-			std::cout << "Projectile created at: " << playerX << ", " << playerY << std::endl;
 
 			cooldown = basecooldown;
 		}
@@ -76,12 +77,38 @@ void projectile::loadTexture() {
 	}
 }
 
-bool projectile::isOutOfBounds()
+void projectile::isOutOfBounds()
 {
 	if (projSprite.getPosition().y < -50.0f ) {
-		return true;
-	}
-	else {
-		return false;
+		assignRemove();
 	}
 }
+
+void projectile::clearSprites()
+{
+	projectiles.clear();
+}
+
+bool projectile::checkCollision(Fodder& fodder)
+{
+	sf::FloatRect projectileBounds = getProjectileBounds();
+	sf::FloatRect fodderBounds = fodder.getFodderBounds();
+
+	return projectileBounds.intersects(fodderBounds);
+}
+
+sf::FloatRect projectile::getProjectileBounds() {
+	return projSprite.getGlobalBounds();
+}
+
+void projectile::assignRemove()
+{
+	remove = true;
+}
+
+bool projectile::deleteEntity()
+{
+	return remove;
+}
+
+

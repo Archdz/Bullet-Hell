@@ -3,6 +3,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "Fodder.h"
 
 class Menu
 {
@@ -14,6 +15,9 @@ public:
     void drawScoreboard(sf::RenderWindow& window);
     void drawSettings(sf::RenderWindow& window);
 
+    void loadDifficulty(int a);
+
+    void createButtons();
     int handleInput();
     void updateButtonColors();
 
@@ -26,5 +30,7 @@ private:
     bool isMenu;
     bool isBack;
     const int backButton{ 6 };
+    const int fodderButton{ 7 };
+    int fodderSetting{ 1 };
 };
 

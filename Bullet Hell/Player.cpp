@@ -5,7 +5,7 @@ Player::Player() {
 	playerScaleY = 0.3f;
 	pPosition.x = 400.0f;
     pPosition.y = 600.0f;
-	movementSpeed = 28.0f;
+	movementSpeed = 32.0f;
 	loadSprites();
 }
 
@@ -22,7 +22,13 @@ void Player::loadSprites() {
 	pSprite.setTexture(pTextureBase);
 
 	pSprite.setScale(playerScaleX, playerScaleY);
+	resetPosition();
+}
+
+void Player::resetPosition()
+{
 	pSprite.setPosition(pPosition.x - (pSprite.getGlobalBounds().width / 2), pPosition.y);
+
 }
 
 sf::Sprite Player::getPlayerSprite()
