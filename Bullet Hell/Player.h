@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Fodder.h"
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -17,6 +18,7 @@ public:
 	float getSizeY();
 	sf::Sprite getPlayerSprite();
 	void resetPosition();
+	bool checkCollision(Fodder& fodder);
 
 private:
 	sf::Sprite pSprite;
@@ -28,5 +30,6 @@ private:
 	float movementSpeed;
 	float playerScaleX;
 	float playerScaleY;
+
 };
 

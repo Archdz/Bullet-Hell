@@ -30,6 +30,7 @@ public:
 
 	void assingRemove();
 	bool deleteEntity();
+	void fodderSpawn2();
 
 private:
 	sf::Sprite fodderSprite;
@@ -40,12 +41,18 @@ private:
 
 	int difficulty;
 	float delay;
-	float delayTimer;
 
 	float movementSpeed;
 	float fodderScaleX;
 	float fodderScaleY;
 	float spawnTimer; 
+	float totalTimer;
+	float timeVar;
+	float delayTimer;
+	float registeredTime;
+
+	float delayBase{ 2.f };
+
 	bool textureLoaded;
 	float upper_bound;
 	float lower_bound;

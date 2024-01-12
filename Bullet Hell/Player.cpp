@@ -124,5 +124,11 @@ float Player::getSizeY()
 	return pSprite.getGlobalBounds().height;
 }
 
+bool Player::checkCollision(Fodder& fodder)
+{
+	sf::FloatRect playerBounds = pSprite.getGlobalBounds();
+	sf::FloatRect fodderBounds = fodder.getFodderBounds();
 
+	return playerBounds.intersects(fodderBounds);
+}
 

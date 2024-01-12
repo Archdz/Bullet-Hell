@@ -6,7 +6,7 @@ Menu::Menu(sf::RenderWindow& windowTemp) : window(windowTemp) {
 
     createButtons();
 
-    std::vector<std::string> headerLabels = { "Main Menu", "Help Title", "Scoreboard Title", "Settings Title"};
+    std::vector<std::string> headerLabels = { "Main Menu", "Help Title", "Scoreboard Title", "Settings Title", "GAMEOVER"};
 
     for (size_t i = 0; i < headerLabels.size(); ++i) {
         sf::Text header;
@@ -63,6 +63,16 @@ void Menu::drawSettings(sf::RenderWindow& windowTemp) {
     windowTemp.draw(buttons[backButton]);
     windowTemp.draw(buttons[fodderButton]);
 }
+
+void Menu::drawGameover(sf::RenderWindow& windowTemp) {
+    isMenu = false;
+    isBack = true;
+
+    updateButtonColors();
+    windowTemp.draw(textHeaders[4]);
+    windowTemp.draw(buttons[backButton]);
+}
+
 
 int Menu::handleInput() {
     sf::Event event;

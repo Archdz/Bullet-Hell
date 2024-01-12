@@ -14,6 +14,7 @@ public:
     void drawHelp(sf::RenderWindow& window);
     void drawScoreboard(sf::RenderWindow& window);
     void drawSettings(sf::RenderWindow& window);
+    void drawGameover(sf::RenderWindow& window);
 
     void loadDifficulty(int a);
 
@@ -31,6 +32,6 @@ private:
     bool isBack;
     const int backButton{ 6 };
     const int fodderButton{ 7 };
-    int fodderSetting{ 1 };
+    int fodderSetting{ 0 };
 };
 
